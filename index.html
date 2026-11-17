@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090909" />
+  <title>PORTFOLIO — Visual Archive</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    :root{--bg:#090909;--fg:#f2f0eb;--muted:#92908c;--red:#ff3038;--line:#33312f}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:'Noto Sans TC',sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none} button{font:inherit}
+    .noise{position:fixed;inset:0;pointer-events:none;z-index:10;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E")}
+    .topbar{height:68px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font:11px 'DM Mono',monospace;letter-spacing:.12em;position:relative;z-index:2}
+    .brand{font-weight:500}.brand span{color:var(--red)}.nav{display:flex;gap:28px;color:#b7b4ae}.nav a:hover{color:var(--red)}
+    .hero{min-height:calc(100svh - 68px);padding:8vh 5vw 5vh;display:flex;flex-direction:column;justify-content:space-between;position:relative;isolation:isolate}
+    .hero:before,.hero:after{content:"";position:absolute;z-index:-1;pointer-events:none}
+    .hero:before{width:70vw;height:1px;right:-10vw;top:34%;background:linear-gradient(90deg,transparent,var(--red),transparent);transform:rotate(-17deg);box-shadow:0 0 12px var(--red),0 0 35px #ff303866}
+    .hero:after{width:1px;height:80vh;right:18%;top:4%;background:linear-gradient(transparent,#ff303899,transparent);transform:rotate(28deg);box-shadow:0 0 16px #ff303866}
+    .eyebrow{font:11px 'DM Mono',monospace;color:var(--red);letter-spacing:.2em}
+    h1{font-size:clamp(4rem,12vw,11rem);line-height:.82;letter-spacing:-.085em;margin:7vh 0 2rem;font-weight:900;max-width:1100px}
+    h1 .outline{color:transparent;-webkit-text-stroke:1px var(--fg)}
+    .hero-bottom{display:flex;justify-content:space-between;align-items:end;gap:30px}
+    .intro{font-size:clamp(14px,1.5vw,18px);line-height:1.8;color:#c6c2bb;max-width:440px}
+    .scroll{font:10px 'DM Mono',monospace;letter-spacing:.18em;color:var(--muted)}
+    .scroll b{color:var(--red);font-size:18px;margin-left:12px}
+    .ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;color:var(--red);font:11px 'DM Mono',monospace;letter-spacing:.18em;white-space:nowrap}
+    .ticker div{display:inline-block;animation:move 28s linear infinite}
+    @keyframes move{to{transform:translateX(-50%)}}
+    section.content{padding:110px 5vw}
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:42px}
+    .section-head h2{font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.07em;margin:0;line-height:.9}
+    .section-head p{font:10px 'DM Mono',monospace;color:var(--muted);letter-spacing:.12em}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .filter{border:1px solid var(--line);background:transparent;color:#aaa;padding:9px 14px;font:10px 'DM Mono',monospace;cursor:pointer;transition:.2s}
+    .filter:hover,.filter.active{background:var(--red);border-color:var(--red);color:#090909}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .project{grid-column:span 6;min-width:0;cursor:pointer}
+    .project:nth-child(3n+2){grid-column:span 5}.project:nth-child(3n+3){grid-column:span 7}
+    .project[hidden]{display:none}
+    .visual{aspect-ratio:1.35;background:#171615;position:relative;overflow:hidden;border:1px solid #292725}
+    .visual:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,#ff30381c 31%,transparent 32%),radial-gradient(ellipse at 70% 40%,#ff303855,transparent 42%);transition:transform .6s}
+    .project:nth-child(2n) .visual:before{background:repeating-linear-gradient(115deg,transparent 0 22px,#ffffff0c 23px 24px),radial-gradient(circle at 30% 70%,#ff303866,transparent 42%)}
+    .project:nth-child(3n) .visual:before{background:linear-gradient(35deg,#ff303855,transparent 45%),repeating-linear-gradient(0deg,transparent 0 35px,#ffffff12 36px 37px)}
+    .visual:hover:before{transform:scale(1.08) rotate(-2deg)}
+    .visual .placeholder{position:absolute;inset:0;display:grid;place-items:center;font:clamp(2rem,6vw,5rem) 'DM Mono',monospace;color:#f2f0eb;letter-spacing:-.1em;mix-blend-mode:screen}
+    .visual .number{position:absolute;top:16px;left:17px;font:10px 'DM Mono',monospace;color:#aaa}
+    .visual .add{position:absolute;right:16px;bottom:13px;color:var(--red);font:10px 'DM Mono',monospace}
+    .project-info{display:flex;justify-content:space-between;gap:20px;padding:14px 0 30px;border-bottom:1px solid var(--line)}
+    .project-info h3{margin:0 0 5px;font-size:17px;font-weight:500}.project-info p{margin:0;color:var(--muted);font-size:11px}
+    .project-info .year{font:10px 'DM Mono',monospace;color:var(--muted);padding-top:5px}
+    .about{background:#efede7;color:#111;padding:90px 5vw;display:grid;grid-template-columns:1fr 1.1fr;gap:8vw}
+    .about .eyebrow{color:var(--red)}.about h2{font-size:clamp(3rem,8vw,7rem);letter-spacing:-.09em;line-height:.85;margin:24px 0}
+    .about-copy{font-size:clamp(15px,1.5vw,19px);line-height:2;max-width:590px;align-self:end}
+    .about-copy p{margin:0 0 20px}.about-copy .small{font:10px 'DM Mono',monospace;letter-spacing:.1em;color:#777}
+    .contact{padding:100px 5vw 45px}
+    .contact h2{font-size:clamp(3.2rem,10vw,9rem);line-height:.85;letter-spacing:-.09em;margin:25px 0 45px}
+    .contact h2 span{color:var(--red)}
+    .contact-row{display:flex;justify-content:space-between;gap:20px;align-items:center;border-top:1px solid var(--line);padding:22px 0}
+    .contact-row a{font:12px 'DM Mono',monospace;color:#ddd}.contact-row a:hover{color:var(--red)}
+    footer{display:flex;justify-content:space-between;padding:20px 5vw;border-top:1px solid var(--line);font:9px 'DM Mono',monospace;color:#777;letter-spacing:.12em}
+    @media(max-width:700px){.topbar{padding:0 6vw}.nav{gap:13px}.nav a{font-size:9px}.hero{padding:9vh 6vw 5vh;min-height:85svh}h1{font-size:18vw}.hero-bottom{align-items:start;flex-direction:column}.scroll{align-self:end}.content{padding:75px 6vw!important}.section-head{align-items:start;flex-direction:column;gap:15px}.project,.project:nth-child(3n+2),.project:nth-child(3n+3){grid-column:span 12}.about{padding:75px 6vw;grid-template-columns:1fr;gap:20px}.about-copy{margin-top:10px}.contact{padding:75px 6vw 35px}footer{padding:18px 6vw;gap:20px;flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#">YOUR NAME<span>®</span></a>
+    <nav class="nav"><a href="#works">WORKS</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a></nav>
+    <span>TW / 2026</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">INDEPENDENT VISUAL PRACTICE　/　SELECTED WORKS 2023—2026</div>
+      <h1>MAKE<br><span class="outline">SOME</span><br>NOISE.</h1>
+      <div class="hero-bottom">
+        <p class="intro">以影像、平面與空間作為語言。<br>收集感知、拆解形式，再把腦中的世界變成看得見的東西。</p>
+        <div class="scroll">SCROLL TO EXPLORE <b>↓</b></div>
+      </div>
+    </section>
+
+    <div class="ticker"><div>VISUAL DESIGN ✳ PHOTOGRAPHY ✳ ART DIRECTION ✳ IMAGE MAKING ✳ SPATIAL EXPERIMENT ✳ VISUAL DESIGN ✳ PHOTOGRAPHY ✳ ART DIRECTION ✳ IMAGE MAKING ✳ SPATIAL EXPERIMENT ✳ </div></div>
+
+    <section class="content" id="works">
+      <div class="section-head"><h2>SELECTED<br>WORKS<span style="color:var(--red)">.</span></h2><p>01 — 06　/　A LIVING ARCHIVE</p></div>
+      <div class="filters">
+        <button class="filter active" data-filter="all">ALL</button>
+        <button class="filter" data-filter="graphic">GRAPHIC</button>
+        <button class="filter" data-filter="photo">PHOTOGRAPHY</button>
+        <button class="filter" data-filter="film">FILM / ART</button>
+        <button class="filter" data-filter="space">SPACE</button>
+      </div>
+      <div class="grid">
+        <article class="project" data-category="graphic">
+          <div class="visual"><span class="number">PROJECT 001</span><span class="placeholder">ACID<br>STATE</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>ACID STATE — 視覺識別</h3><p>Graphic Design / Screen Print</p></div><span class="year">2025</span></div>
+        </article>
+        <article class="project" data-category="photo">
+          <div class="visual"><span class="number">PROJECT 002</span><span class="placeholder">GIRL<br>HOOD</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>青春 — 狀態練習</h3><p>Photography / Art Direction</p></div><span class="year">2026</span></div>
+        </article>
+        <article class="project" data-category="film">
+          <div class="visual"><span class="number">PROJECT 003</span><span class="placeholder">MOVING<br>IMAGE</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>影像與敘事</h3><p>Film / Production Design</p></div><span class="year">2025</span></div>
+        </article>
+        <article class="project" data-category="space">
+          <div class="visual"><span class="number">PROJECT 004</span><span class="placeholder">IN<br>SPACE</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>空間陳設實驗</h3><p>Spatial Design / Installation</p></div><span class="year">2026</span></div>
+        </article>
+        <article class="project" data-category="photo">
+          <div class="visual"><span class="number">PROJECT 005</span><span class="placeholder">A WAY<br>OF SEEING</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>觀看方式研究</h3><p>Photography / Fine Art</p></div><span class="year">2025</span></div>
+        </article>
+        <article class="project" data-category="graphic">
+          <div class="visual"><span class="number">PROJECT 006</span><span class="placeholder">PRINT<br>MATTER</span><span class="add">+ ADD IMAGE</span></div>
+          <div class="project-info"><div><h3>印刷物與編輯設計</h3><p>Editorial / Graphic Design</p></div><span class="year">2024</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div><div class="eyebrow">A LITTLE ABOUT ME</div><h2>IMAGE<br>MAKER<br>& THINKER.</h2></div>
+      <div class="about-copy">
+        <p>我關注形式背後的狀態，以及情緒、氣質如何透過影像、物件與空間被感知。</p>
+        <p>創作橫跨平面設計、攝影、動態影像與空間實驗。比起固定一種風格，我更在意每個作品如何長出自己的視覺語言。</p>
+        <p class="small">BASED IN TAIWAN　/　AVAILABLE FOR COLLABORATION</p>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="eyebrow">HAVE A PROJECT IN MIND?</div>
+      <h2>LET'S MAKE<br><span>IT LOUD.</span></h2>
+      <div class="contact-row"><span>FOR COLLABORATION / INQUIRIES</span><a href="mailto:hello@example.com">HELLO@EXAMPLE.COM ↗</a></div>
+      <div class="contact-row"><span>ELSEWHERE</span><a href="https://www.instagram.com/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a></div>
+    </section>
+  </main>
+  <footer><span>© 2026 YOUR NAME — ALL RIGHTS RESERVED</span><span>DESIGNED WITH INTENTION / BUILT FOR THE WEB</span></footer>
+  <script>
+    const filters = document.querySelectorAll('.filter');
+    const projects = document.querySelectorAll('.project');
+    filters.forEach(button => button.addEventListener('click', () => {
+      filters.forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      const category = button.dataset.filter;
+      projects.forEach(project => project.hidden = category !== 'all' && project.dataset.category !== category);
+    }));
+  </script>
+</body>
+</html>
